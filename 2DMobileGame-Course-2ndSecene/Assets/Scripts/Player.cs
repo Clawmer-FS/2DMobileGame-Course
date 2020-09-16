@@ -4,31 +4,56 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    //get handle to rigidbody
     private Rigidbody2D _rigid;
-    //variable jump force
+
+    [Header("Player Movement")]
     [SerializeField]
     private float _jumpforce = 5.0f;
-
+    [SerializeField]
+    private float _speed = 2.5f;
+    [SerializeField]
+    private bool resetJump = false;
     
-    // Start is called before the first frame update
     void Start()
     {
-        //assign handle of rigidbody
         _rigid = GetComponent<Rigidbody2D>();   
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //check horizontal input left, right
-        float move= Input.GetAxisRaw("Horizontal");
-
-        //access rigidboyd and set volicity
-        //current volicity = new velocity (horizontal input, current.velocity.y)
-        _rigid.velocity = new Vector2(move, _rigid.velocity.y);
-
-        //check Input Spacebar & grounded = true
-        //velocity (curent, input)
+        Movement();
     }
+
+    void Movement()
+    {
+        float move = Input.GetAxisRaw("Horizontal");
+        _rigid.velocity = new Vector2(move * _speed, _rigid.velocity.y);
+
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        {
+            _rigid.velocity = new Vector2(_rigid.velocity.x, _jumpforce);
+            StartCoroutine(ResetJumpRoutine());
+        }
+    }
+
+    bool IsGrounded()
+    {
+        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.down, 1f, 1 << 8);
+        if (hitInfo.collider != null)
+        {
+            if (resetJump == false)
+            {
+                return true;
+            }            
+        }
+        return false;
+    }
+
+    IEnumerator ResetJumpRoutine()
+    {
+        resetJump =true;
+        yield return new WaitForSeconds(0.1f);
+        resetJump = false;
+    }
+        
 }
