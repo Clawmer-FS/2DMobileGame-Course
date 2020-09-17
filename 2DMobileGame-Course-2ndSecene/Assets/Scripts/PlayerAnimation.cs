@@ -14,13 +14,19 @@ public class PlayerAnimation : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
 
-        
-    }
     public void Move(float move)
     {
         _anim.SetFloat("Move", Mathf.Abs(move));
+    }
+
+    public void Jumping(bool jumping)
+    {
+        _anim.SetBool("Jumping", jumping);
+    }
+
+    public void Attack()
+    {
+        _anim.SetTrigger("Attack");
     }
 }

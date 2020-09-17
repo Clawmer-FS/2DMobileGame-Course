@@ -28,16 +28,23 @@ public class Player : MonoBehaviour
     void Update()
     {
         Movement();
+
+        if (Input.GetMouseButtonDown(0) && IsGrounded())
+        {
+            _playerAnim.Attack();
+        }
     }
 
     void Movement()
     {
         float move = Input.GetAxisRaw("Horizontal");
+        IsGrounded();
         Flip(move);
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             _rigid.velocity = new Vector2(_rigid.velocity.x, _jumpforce);
             StartCoroutine(ResetJumpRoutine());
+            _playerAnim.Jumping(true);
         }
 
         _rigid.velocity = new Vector2(move * _speed, _rigid.velocity.y);
@@ -51,6 +58,7 @@ public class Player : MonoBehaviour
         {
             if (resetJump == false)
             {
+                _playerAnim.Jumping(false);
                 return true;
             }            
         }
@@ -67,6 +75,11 @@ public class Player : MonoBehaviour
         {
             _playerSprite.flipX = true;
         }
+    }
+
+    void Attack()
+    {
+        _playerAnim.Attack();
     }
 
     IEnumerator ResetJumpRoutine()
