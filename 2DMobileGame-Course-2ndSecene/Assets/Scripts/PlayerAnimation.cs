@@ -6,11 +6,13 @@ public class PlayerAnimation : MonoBehaviour
 {
     private Animator _anim;
 
+    private Animator _swordAnim;
 
     // Start is called before the first frame update
     void Start()
     {
         _anim = GetComponentInChildren<Animator>();
+        _swordAnim = transform.GetChild(1).GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -28,5 +30,6 @@ public class PlayerAnimation : MonoBehaviour
     public void Attack()
     {
         _anim.SetTrigger("Attack");
+        _swordAnim.SetTrigger("Attack");
     }
 }
