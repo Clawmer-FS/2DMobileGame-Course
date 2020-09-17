@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D _rigid;
     private PlayerAnimation _playerAnim;
-
+    
 
     [Header("Player Movement")]
     [SerializeField]
@@ -17,12 +17,14 @@ public class Player : MonoBehaviour
     private bool resetJump = false;
 
     private SpriteRenderer _playerSprite;
-    
+    private SpriteRenderer _swordArcSprite;
+        
     void Start()
     {
         _rigid = GetComponent<Rigidbody2D>();
         _playerAnim = GetComponent<PlayerAnimation>();
         _playerSprite = GetComponentInChildren<SpriteRenderer>();
+        _swordArcSprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -70,10 +72,24 @@ public class Player : MonoBehaviour
         if (move > 0)
         {
             _playerSprite.flipX = false;
+            _swordArcSprite.flipX = false;
+            _swordArcSprite.flipY = false;
+
+            Vector3 newPos = _swordArcSprite.transform.localPosition;
+            newPos.x = 1.0f;
+            _swordArcSprite.transform.localPosition = newPos;
+
         }
         else if (move < 0)
         {
             _playerSprite.flipX = true;
+            _swordArcSprite.flipX = true;
+            _swordArcSprite.flipY = true;
+
+            Vector3 newPos = _swordArcSprite.transform.localPosition;
+            newPos.x = -1.0f;
+            _swordArcSprite.transform.localPosition = newPos;
+
         }
     }
 
