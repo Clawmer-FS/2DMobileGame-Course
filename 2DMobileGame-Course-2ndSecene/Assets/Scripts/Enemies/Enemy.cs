@@ -12,6 +12,11 @@ public abstract class Enemy : MonoBehaviour
     protected float speed;
     [SerializeField]
     protected int gems;
+    [Header("Waypoints")]
+    [SerializeField]
+    protected Transform pointA;
+    [SerializeField]
+    protected Transform pointB;
 
     public virtual void Attack()
     {
